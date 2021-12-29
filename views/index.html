@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr" >
+
+<head>
+    <meta charset="UTF-8">
+    <title>Messagerie instantanée via Socket.IO</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/loader.css">
+</head>
+
+<body class="modal-active">
+
+<div id="modal-container" class="modal-container">
+    <div id="contentUsername" class="modal-background">
+        <form class="modal" id="username" method="post">
+            <h2>Choisis un username</h2>
+            <input autocomplete="off" id="usernameDef" name="username"  type="text">
+            <div class="loader hidden" id="load"></div>
+        </form>
+    </div>
+    <div id="contentUsers" class="modal-background none">
+        <span class="closeIcon" onclick="closeModal()"></span>
+        <ul class="listModal" id="list">
+            <li>Joris</li>
+            <li>Alexis974</li>
+            <li>ManiMano</li>
+            <li>GoogleHome</li>
+            <li>Huge Man</li>
+            <li>Ricky Dicks</li>
+            <li>Martin McCain</li>
+            <li>Mister T</li>
+            <li>MozorStudio</li>
+            <li>GutterBalls</li>
+            <li>HessMan</li>
+        </ul>
+    </div>
+</div>
+
+<div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div class="top">
+                <input type="text" placeholder="Rechercher" />
+                <a href="javascript:;" class="search"></a>
+            </div>
+            <ul class="people" id="peoples">
+                <li class="person" data-chat="person0">
+                    <span class="name" id="discussion">Discussion générale</span>
+                    <span class="preview">Bienvenue !</span>
+                </li>
+            </ul>
+        </div>
+        <div class="right">
+            <div class="top">
+                <span>Vers:
+                    <span class="name" id="infoPersonTop">Discussion générale</span>
+                </span>
+            </div>
+            <div class="chat" data-chat="person0" id="conversationStart">
+                <div class="conversation-start">
+                    <span>Bienvenue !</span>
+                </div>
+            </div>
+            <div class="write">
+                <span class="someoneWriting none" id="writting">En train d'écrire</span>
+                <input type="text" id="inputText"/>
+                <a href="javascript:;" class="write-link send" onclick="sendMessage()"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/index.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="assets/js/client.js"></script>
+</body>
+
+</html>
