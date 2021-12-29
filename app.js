@@ -1,4 +1,5 @@
 const  express = require('express');
+const PORT = process.env.PORT || 3000
 const app = express()
 const path = require('path');
 const http = require('http');
@@ -9,7 +10,6 @@ const { Server } = require("socket.io");
 const io = new Server(server)
 
 
-const port = 3000
 let users = []
 
 const bodyParser = require("body-parser");
@@ -128,7 +128,7 @@ io.on('connection', (socket) => {
 })
 
 
-server.listen(port, () => {
+server.listen(PORT, () => {
   
   console.log(`Example app listening at http://localhost:${port}`)
 });
