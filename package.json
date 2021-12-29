@@ -1,0 +1,30 @@
+{
+  "name": "private-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nodemon ",
+  "dependencies": {
+    "config": "^3.3.6",
+    "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "socket.io": "^4.4.0",
+    "socketio": "^1.0.0",
+    "striptags": "^3.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Isidore-2001/private-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Isidore-2001/private-chat/issues"
+  },
+  "homepage": "https://github.com/Isidore-2001/private-chat#readme"
+}
