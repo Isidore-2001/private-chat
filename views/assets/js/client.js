@@ -98,12 +98,12 @@ inputText.addEventListener('keydown', (event)=>{
         if (!isWritting){
                 isWritting = true;
                 console.log("isWritting");
-                socket.emit('startWritting');
+                socket.emit('startWritting', chat.person);
         }
         time = setTimeout(()=>{
             isWritting = false;
             console.log("StopWriting");
-            socket.emit('stopWritting');
+            socket.emit('stopWritting', chat.person);
         }, 1000);
     }
 });

@@ -51,6 +51,7 @@ const usersname = (_users) => {
         return u;
 
  }
+
 const socketsID = (_users) => {
     u = []
     _users.forEach(elt = (elt) => {
@@ -105,18 +106,18 @@ io.on('connection', (socket) => {
             socket.to(dataChat).emit('newMessageOfGroup', text, user, socket.id, dataChat);
         }
     })
-    socket.on('startWritting', ()=>{
+    socket.on('startWritting', (dataChat)=>{
 
         let user;
         users.forEach(elt = (elt) => {
             if (elt.socketId == socket.id){
             user = elt.name;
         }})
-        socket.to('users').emit('usersWritting', user);
+        socket.to(dataChat).emit('usersWritting', user);
     })
     
-    socket.on('stopWritting', ()=>{
-        socket.to('users').emit('usersStopWritting');
+    socket.on('stopWritting', (dataChat)=>{
+        socket.to(dataChat).emit('usersStopWritting');
     })
     socket.on('disconnect', ()=>{
         console.log(socket.id + 'vient de se déconnecter');
@@ -130,6 +131,25 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
   
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://localhost:${PORT}`)
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
