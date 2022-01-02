@@ -14,7 +14,11 @@ let users = []
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
-
+/**
+ *Cette fonction permet d'accepter un utilisateur
+ * en vérifiant si l'utilisateur est déjà présent dans la liste 
+ * ou pas
+ */ 
 const acceptUser = function(_users, username){
    let response = null;
 
@@ -32,13 +36,29 @@ const acceptUser = function(_users, username){
 }
 
 
+const getDataChat = (destSocket){
+        let dataChat;
+
+        if (destSocket == 'person0'){
+            dataChat = 'users';
+        }
+        else{
+            dataChat = destSocket;
+        }
+
+    return dataChat;
+    
+}
+
 app.use(express.static(path.join(__dirname + '/views')));
 
 app.get('/', (req, res) => {
    console.log(__dirname)
   res.sendFile(__dirname + '/views' +  '/index.html')
 });
-
+/**
+ *Récupérer les valeurs de la requête post
+ */
 app.post('/', function(req, res) {
         var user_name = req.body.username;
         res.end("yes");
@@ -87,15 +107,11 @@ io.on('connection', (socket) => {
     }
     ), time});
 
+    /**
+     * Reception de message côté client pour le repartager 
+     */
     socket.on('newGroupMessage', (text, destSocket) => {
-        let dataChat;
-
-        if (destSocket == 'person0'){
-            dataChat = 'users';
-        }
-        else{
-            dataChat = destSocket;
-        }
+        let dataChat = getDataChat(destSocket);
         text = striptags(text.trim());
         let user;
         users.forEach(elt = (elt) => {
@@ -106,8 +122,12 @@ io.on('connection', (socket) => {
             socket.to(dataChat).emit('newMessageOfGroup', text, user, socket.id, dataChat);
         }
     })
-    socket.on('startWritting', (dataChat)=>{
 
+    /**
+     *
+     **/
+    socket.on('startWritting', (destSocket)=>{
+        let dataChat = getDataChat(destSocket);
         let user;
         users.forEach(elt = (elt) => {
             if (elt.socketId == socket.id){
@@ -116,14 +136,21 @@ io.on('connection', (socket) => {
         socket.to(dataChat).emit('usersWritting', user);
     })
     
-    socket.on('stopWritting', (dataChat)=>{
+    socket.on('stopWritting', (destSocket)=>{
+        let dataChat;
+
+        if (destSocket == 'person0'){
+            dataChat = 'users';
+        }
+        else{
+            dataChat = destSocket;
+        }
         socket.to(dataChat).emit('usersStopWritting');
     })
     socket.on('disconnect', ()=>{
         console.log(socket.id + 'vient de se déconnecter');
         users = users.filter(elt => elt.socketId != socket.id);
         socket.to("users").emit("leftUsers", usersname(users), socket.id);
-        //socket.to("users").emit("leftUserMessage", username);
         console.log(users);
     });
 })

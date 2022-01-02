@@ -117,7 +117,7 @@ socket.on('newUser', (user1, users) => {
 });
 
 
-socket.on('usersWritting', (user) => {
+socket.on('usersWritting', (user, dataChat) => {
     write.classList.remove('none');
     write.innerHTML =  user + " est entrain d'écrire";
 })
