@@ -36,10 +36,10 @@ const acceptUser = function(_users, username){
 }
 
 
-const getDataChat = (destSocket){
+const getDataChat = (destSocket) => {
         let dataChat;
 
-        if (destSocket == 'person0'){
+        if (destSocket == 'person0' || destSocket == null){
             dataChat = 'users';
         }
         else{
@@ -82,7 +82,6 @@ const socketsID = (_users) => {
 // Connection de l'utilisateur
 let time = 5000;
 io.on('connection', (socket) => { 
-    console.log(users[socket.id]);
     console.log(socket.id + 'a user connected');
     setTimeout(() =>{
         console.log("oui")
@@ -129,24 +128,32 @@ io.on('connection', (socket) => {
     socket.on('startWritting', (destSocket)=>{
         let dataChat = getDataChat(destSocket);
         let user;
+        let tmp;
+        console.log(`dataChat envoyé est ${destSocket}`);
+        if (destSocket == null || destSocket == 'person0'){
+            tmp = 'person0'
+        }
+        else{
+            // dataChat correspond à celui qu'on envoie le message 
+            // et socket.id correspond à celui qui envoie le message
+            // ce qu'on renvoie au client pour vérifier que la discussion se passe entre les deux personnes
+            tmp = socket.id;
+           }
         users.forEach(elt = (elt) => {
             if (elt.socketId == socket.id){
             user = elt.name;
         }})
-        socket.to(dataChat).emit('usersWritting', user);
+        socket.to(dataChat).emit('usersWritting', user, tmp);
+        console.log(destSocket);
     })
     
     socket.on('stopWritting', (destSocket)=>{
-        let dataChat;
+        let dataChat = getDataChat(destSocket);
 
-        if (destSocket == 'person0'){
-            dataChat = 'users';
-        }
-        else{
-            dataChat = destSocket;
-        }
         socket.to(dataChat).emit('usersStopWritting');
     })
+
+
     socket.on('disconnect', ()=>{
         console.log(socket.id + 'vient de se déconnecter');
         users = users.filter(elt => elt.socketId != socket.id);

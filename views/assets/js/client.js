@@ -37,7 +37,7 @@ user.addEventListener('submit', (event)=>{
  }
 
  /**
-  * Affichage du nombre de personne
+  * Affichage du nombre de personn
   */
 const updateUser = (_username)=>{
     liste = "";
@@ -91,6 +91,11 @@ let time = null;
 inputText.addEventListener('keydown', (event)=>{
     if (event.keyCode == 13){
         let destSocket = chat.person;
+        // Pour filtrer le fait que chat.person peut valoir null au début 
+        //
+        if (destSocket == null){
+            destSocket = 'person0';
+        }
         sendMessage(destSocket)
     }else{
         clearTimeout(time);
@@ -118,8 +123,12 @@ socket.on('newUser', (user1, users) => {
 
 
 socket.on('usersWritting', (user, dataChat) => {
+    console.log(`chat.person est ${chat.person} et dataChat est ${dataChat}`)
+    // Vérication que chat.person correspond au socket qui est envoyé
+    if ((chat.person == dataChat) || (dataChat == 'person0' && chat.person == null)){ 
     write.classList.remove('none');
     write.innerHTML =  user + " est entrain d'écrire";
+    }
 })
 
 socket.on('usersStopWritting', () =>{ 
@@ -133,9 +142,10 @@ const sendMessage = (destSocket) => {
     let text = inputText.value.trim();
     if (text != ''){
         clearTimeout(time);
-       socket.emit('newGroupMessage', text, destSocket);
-       conversationStart = document.querySelector('.chat[data-chat='+chat.person+']');
-       conversationStart.insertAdjacentHTML('beforeend',"<div class=\"bubble name me\">" + text  + "</div> ");
+        socket.emit('newGroupMessage', text, destSocket);
+        let conversation = document.querySelector('.chat[data-chat='+destSocket+']');
+        
+       conversation.insertAdjacentHTML('beforeend',"<div class=\"bubble name me\">" + text  + "</div> ");
        inputText.value = '';
        isWritting = false; 
        console.log("StopWriting");
