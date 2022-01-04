@@ -67,8 +67,8 @@ for (i = 0; i < users.length; i++) {
 }
 
 socket.on('leftUsers', (users, socketID) => {
-    let personOnListPerson = document.querySelector('.chat[data-chat=' + socketID +']');
-    let person = document.querySelector('.person[data-chat=' + socketID  + ']');
+    let personOnListPerson = document.querySelector('.chat[data-chat="' + socketID +'"]');
+    let person = document.querySelector('.person[data-chat="' + socketID  + '"]');
     if (person != null){
         person.remove();
     }
@@ -144,7 +144,7 @@ const sendMessage = () => {
             destSocket = 'person0';
         }
         socket.emit('newGroupMessage', text, destSocket);
-        let conversation = document.querySelector('.chat[data-chat='+destSocket+']');
+        let conversation = document.querySelector('.chat[data-chat="'+destSocket+'"]');
         
        conversation.insertAdjacentHTML('beforeend',"<div class=\"bubble name me\">" + text  + "</div> ");
        inputText.value = '';
@@ -157,7 +157,7 @@ const sendMessage = () => {
 socket.on('newMessageOfGroup', (text, user, destSocket, dataChat) => {
     let conversation;
     if (dataChat != 'users'){
-        conversation = document.querySelector('.chat[data-chat='+destSocket+']');
+        conversation = document.querySelector('.chat[data-chat="'+destSocket+'"]');
     }
     else{
         conversation = conversationStart;
