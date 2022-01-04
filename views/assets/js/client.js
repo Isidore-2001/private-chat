@@ -90,13 +90,7 @@ let isWritting = false;
 let time = null;
 inputText.addEventListener('keydown', (event)=>{
     if (event.keyCode == 13){
-        let destSocket = chat.person;
-        // Pour filtrer le fait que chat.person peut valoir null au début 
-        //
-        if (destSocket == null){
-            destSocket = 'person0';
-        }
-        sendMessage(destSocket);
+        sendMessage();
         socket.emit('stopWritting', chat.person);
     }else{
         clearTimeout(time);
@@ -139,10 +133,16 @@ socket.on('usersStopWritting', () =>{
  * Envoie d'un message 
  * récupération d'un message grâce à inputText.value
  */
-const sendMessage = (destSocket) => {
+const sendMessage = () => {
     let text = inputText.value.trim();
     if (text != ''){
         clearTimeout(time);
+        let destSocket = chat.person;
+        // Pour filtrer le fait que chat.person peut valoir null au début 
+        //
+        if (destSocket == null){
+            destSocket = 'person0';
+        }
         socket.emit('newGroupMessage', text, destSocket);
         let conversation = document.querySelector('.chat[data-chat='+destSocket+']');
         
