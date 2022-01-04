@@ -96,7 +96,8 @@ inputText.addEventListener('keydown', (event)=>{
         if (destSocket == null){
             destSocket = 'person0';
         }
-        sendMessage(destSocket)
+        sendMessage(destSocket);
+        socket.emit('stopWritting', chat.person);
     }else{
         clearTimeout(time);
         
